@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprobante de Pago · Club de Aeromodelismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <img class="plane-mark" src="logo-aaz.png" alt="Logo A.A.Z.">
+    <div>
+      <h1>Generador de comprobante de pago</h1>
+      <p>Asociación Civil Aerocontrolados Zárate · completá el formulario y descargá el PDF</p>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <!-- ================= FORM ================= -->
+    <div class="panel">
+
+      <h2>Datos del comprobante</h2>
+      <div class="field-row">
+        <div class="field">
+          <label for="fecha">Fecha de pago</label>
+          <input id="fecha" type="date">
+        </div>
+        <div class="field">
+          <label for="estado">Estado</label>
+          <select id="estado">
+            <option>Pagado</option>
+            <option>Pendiente</option>
+            <option>Parcial</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="metodo">Método de pago</label>
+          <select id="metodo">
+            <option>Efectivo</option>
+            <option>Transferencia</option>
+          </select>
+        </div>
+        <div class="field"></div>
+      </div>
+
+      <h2>Datos del socio</h2>
+      <div class="field-row">
+        <div class="field">
+          <label for="socioNombre">Nombre y apellido</label>
+          <input id="socioNombre" placeholder="Juan Pérez">
+        </div>
+        <div class="field">
+          <label for="socioNum">N° de socio (opcional)</label>
+          <input id="socioNum" placeholder="045">
+        </div>
+      </div>
+
+      <h2>Conceptos / ítems que incluye</h2>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th style="width:auto">Descripción</th>
+            <th class="qty">Cant.</th>
+            <th class="price">Precio</th>
+            <th style="width:90px">Subtotal</th>
+            <th style="width:26px"></th>
+          </tr>
+        </thead>
+        <tbody id="itemsBody"></tbody>
+      </table>
+      <button class="add-item-btn" id="addItem" type="button">+ Agregar ítem</button>
+
+      <button class="btn-download" id="downloadBtn" type="button">⬇ Emitir y descargar recibo</button>
+      <button class="btn-secondary" id="newReceiptBtn" type="button" style="display:none;">+ Emitir otro recibo</button>
+    </div>
+
+    <!-- ================= TICKET PREVIEW ================= -->
+    <div class="ticket-sticky">
+      <div class="ticket-shell">
+        <div id="receipt">
+          <img class="watermark" src="logo-aaz.png" alt="">
+          <div class="badge-pagado" id="badgeEstado">Pagado</div>
+
+          <div class="r-top">
+            <img class="r-logo" src="logo-aaz.png" alt="Logo A.A.Z.">
+            <div>
+              <div class="r-club">Asociación Civil<br>Aerocontrolados Zárate</div>
+              <div class="r-club-sub">Comprobante de pago</div>
+            </div>
+            <div class="r-num">
+              <span class="lbl">N° de recibo</span>
+              <span class="val" id="prNumero">—</span>
+            </div>
+          </div>
+
+          <div class="r-cols r-section">
+            <div>
+              <div class="r-label">Socio</div>
+              <div class="r-value" id="prSocio">—</div>
+            </div>
+            <div>
+              <div class="r-label">N° de socio</div>
+              <div class="r-value" id="prSocioNum">—</div>
+            </div>
+            <div>
+              <div class="r-label">Fecha de pago</div>
+              <div class="r-value" id="prFecha">—</div>
+            </div>
+            <div>
+              <div class="r-label">Método de pago</div>
+              <div class="r-value" id="prMetodo">—</div>
+            </div>
+          </div>
+
+          <div class="r-section">
+            <div class="r-label">Detalle</div>
+            <table class="r-items">
+              <thead>
+                <tr><th>Concepto</th><th class="num">Cant.</th><th class="num">Precio</th><th class="num">Subtotal</th></tr>
+              </thead>
+              <tbody id="prItems"></tbody>
+            </table>
+            <div class="r-total-row">
+              <span class="lbl">Total</span>
+              <span class="amount" id="prTotal">$ 0,00</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="perforation"></div>
+        <div class="stub">
+          <span class="stub-club">A.A.Z. · AEROCONTROLADOS ZÁRATE</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="credit">Comprobante generado digitalmente · conservar como constancia de pago</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

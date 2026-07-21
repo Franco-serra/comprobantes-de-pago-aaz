@@ -1,0 +1,17 @@
+{
+  "name": "aaz-recibos",
+  "version": "1.0.0",
+  "description": "Generador de comprobantes de pago - A.A.Z. Aerocontrolados Zarate",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@libsql/client": "^0.17.4",
+    "express": "^5.2.1"
+  }
+}
