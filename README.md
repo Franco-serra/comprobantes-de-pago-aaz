@@ -48,17 +48,17 @@ instalar el CLI, si preferís.)*
 
 ## Paso 2 — Subir el proyecto a GitHub
 
-Render despliega desde un repositorio de GitHub. Si el proyecto
-todavía no está en GitHub:
+Este proyecto ya viene con un repositorio git inicializado y el
+primer commit hecho, así que solo falta conectarlo a GitHub:
 
-```bash
-cd aaz-render
-git init
-git add .
-git commit -m "Primer commit"
-```
-
-Y lo subís a un repo nuevo en https://github.com/new.
+1. Creás un repositorio nuevo (vacío, sin README) en
+   https://github.com/new — por ejemplo `aaz-recibos`.
+2. Copiás la URL que te da GitHub y corrés, dentro de esta carpeta:
+   ```bash
+   git remote add origin https://github.com/TU-USUARIO/aaz-recibos.git
+   git branch -M main
+   git push -u origin main
+   ```
 
 ## Paso 3 — Crear el servicio en Render
 
