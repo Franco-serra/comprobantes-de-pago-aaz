@@ -77,6 +77,109 @@ document.getElementById('fecha').valueAsDate = new Date();
 addItemRow('Cuota mensual', 1, 0);
 render();
 
+// ---------- Autocompletado de socios ----------
+let sociosCache = [];
+
+async function cargarSocios(){
+  try {
+    const resp = await fetch('/api/socios');
+    if (!resp.ok) throw new Error('No se pudo cargar el listado de socios.');
+    sociosCache = await resp.json();
+  } catch (e) {
+    console.error(e);
+    // Si falla (por ejemplo, sin conexión), el campo sigue funcionando
+    // como texto libre; simplemente no va a sugerir nada.
+  }
+}
+cargarSocios();
+
+function normalizar(txt){
+  return (txt || '').toString()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // saca acentos
+    .toLowerCase().trim();
+}
+
+const inputSocio = document.getElementById('socioNombre');
+const listaSugerencias = document.getElementById('socioSuggestions');
+let activeIndex = -1;
+
+function cerrarSugerencias(){
+  listaSugerencias.classList.remove('open');
+  listaSugerencias.innerHTML = '';
+  activeIndex = -1;
+}
+
+function mostrarSugerencias(query){
+  const q = normalizar(query);
+  if (q.length < 2) { cerrarSugerencias(); return; }
+
+  const matches = sociosCache
+    .filter(s => normalizar(s.nombre).includes(q))
+    .slice(0, 8);
+
+  if (matches.length === 0) {
+    listaSugerencias.innerHTML = '<div class="autocomplete-empty">Sin coincidencias — podés cargarlo igual como invitado</div>';
+    listaSugerencias.classList.add('open');
+    activeIndex = -1;
+    return;
+  }
+
+  listaSugerencias.innerHTML = matches.map((s, i) =>
+    `<div class="autocomplete-item" data-i="${i}" data-numero="${s.numero}" data-nombre="${s.nombre.replace(/"/g, '&quot;')}">
+       <span>${s.nombre}</span><span class="ac-num">N° ${s.numero}</span>
+     </div>`
+  ).join('');
+  listaSugerencias.classList.add('open');
+  activeIndex = -1;
+
+  listaSugerencias.querySelectorAll('.autocomplete-item').forEach(el => {
+    el.addEventListener('mousedown', (e) => {
+      e.preventDefault(); // evita perder el foco antes del click
+      elegirSocio(el.dataset.nombre, el.dataset.numero);
+    });
+  });
+}
+
+function elegirSocio(nombre, numero){
+  inputSocio.value = nombre;
+  document.getElementById('socioNum').value = numero;
+  cerrarSugerencias();
+  render();
+}
+
+inputSocio.addEventListener('input', () => mostrarSugerencias(inputSocio.value));
+inputSocio.addEventListener('focus', () => { if (inputSocio.value.trim().length >= 2) mostrarSugerencias(inputSocio.value); });
+inputSocio.addEventListener('blur', () => setTimeout(cerrarSugerencias, 120));
+
+inputSocio.addEventListener('keydown', (e) => {
+  const items = [...listaSugerencias.querySelectorAll('.autocomplete-item')];
+  if (!items.length) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    activeIndex = Math.min(activeIndex + 1, items.length - 1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    activeIndex = Math.max(activeIndex - 1, 0);
+  } else if (e.key === 'Enter') {
+    if (activeIndex >= 0) {
+      e.preventDefault();
+      const el = items[activeIndex];
+      elegirSocio(el.dataset.nombre, el.dataset.numero);
+    }
+    return;
+  } else if (e.key === 'Escape') {
+    cerrarSugerencias();
+    return;
+  } else {
+    return;
+  }
+
+  items.forEach(el => el.classList.remove('active'));
+  items[activeIndex].classList.add('active');
+  items[activeIndex].scrollIntoView({ block: 'nearest' });
+});
+
 // ---------- Emitir recibo (pide número al backend) + descargar PDF ----------
 function collectItems(){
   return [...document.querySelectorAll('#itemsBody tr')].map(tr => {

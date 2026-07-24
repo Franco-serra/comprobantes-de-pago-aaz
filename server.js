@@ -41,9 +41,22 @@ async function initDb() {
       emitido_en  TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
+
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS socios (
+      numero  INTEGER PRIMARY KEY,
+      nombre  TEXT NOT NULL
+    );
+  `);
 }
 
 // ---------- API ----------
+
+// Devuelve el listado completo de socios (para el autocompletado).
+app.get('/api/socios', async (req, res) => {
+  const result = await db.execute('SELECT numero, nombre FROM socios ORDER BY nombre');
+  res.json(result.rows);
+});
 
 // Emite un recibo nuevo: guarda los datos y devuelve el número asignado.
 // El número lo pone la base de datos (AUTOINCREMENT), así que dos

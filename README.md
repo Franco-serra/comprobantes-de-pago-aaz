@@ -108,9 +108,30 @@ node -r dotenv/config server.js
 (Si no tenés `dotenv` instalado: `npm install dotenv`, o simplemente
 exportá las variables a mano antes de correr `npm start`.)
 
+## Paso 4 — Cargar el listado de socios (autocompletado)
+
+El formulario sugiere nombres a medida que se escriben unas letras
+del apellido. Esos nombres salen de la tabla `socios` en Turso, que
+se carga con un script aparte (`seed-socios.js`), ya con el listado
+completo de la A.A.Z. cargado adentro.
+
+Corré esto una sola vez, con las mismas credenciales de Turso del
+paso 1:
+
+```bash
+TURSO_DATABASE_URL=libsql://tu-base.turso.io TURSO_AUTH_TOKEN=tu-token node seed-socios.js
+```
+
+Si más adelante entra un socio nuevo, se da de baja alguno, o hay que
+corregir un nombre: abrís `seed-socios.js`, editás el array `socios`
+de ahí adentro (agregando, sacando o corrigiendo la línea que
+corresponda), y volvés a correr el mismo comando — no rompe nada,
+simplemente actualiza lo que cambió.
+
 ## Endpoints de la API (por si querés armar un panel más adelante)
 
 - `POST /api/recibos` → registra un recibo nuevo y devuelve el número.
 - `GET /api/recibos` → lista todos los recibos emitidos, más nuevo primero.
 - `GET /api/recibos/:numero` → devuelve un recibo puntual (para
   reimprimir, por ejemplo).
+- `GET /api/socios` → lista todos los socios (la usa el autocompletado).
