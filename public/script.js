@@ -37,6 +37,9 @@ function render(){
   document.getElementById('prFecha').textContent = fmtFecha(document.getElementById('fecha').value);
   document.getElementById('prMetodo').textContent = document.getElementById('metodo').value;
   document.getElementById('prNumero').textContent = issuedNumero ? ('N° ' + issuedNumero) : '—';
+  const obs = document.getElementById('observaciones').value.trim();
+  document.getElementById('prObs').textContent = obs;
+  document.getElementById('prObsWrap').style.display = obs ? 'block' : 'none';
 
   const estado = document.getElementById('estado').value;
   const badge = document.getElementById('badgeEstado');
@@ -226,7 +229,8 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         socio,
         socioNum: document.getElementById('socioNum').value.trim(),
         items,
-        total
+        total,
+        observaciones: document.getElementById('observaciones').value.trim()
       })
     });
 
@@ -276,6 +280,7 @@ document.getElementById('newReceiptBtn').addEventListener('click', () => {
   setFormDisabled(false);
   document.getElementById('socioNombre').value = '';
   document.getElementById('socioNum').value = '';
+  document.getElementById('observaciones').value = '';
   document.getElementById('estado').value = 'Pagado';
   document.getElementById('metodo').value = 'Efectivo';
   document.getElementById('fecha').valueAsDate = new Date();

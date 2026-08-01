@@ -38,6 +38,7 @@ async function initDb() {
       socio_num   TEXT,
       items       TEXT NOT NULL,
       total       REAL NOT NULL,
+      observaciones TEXT,
       emitido_en  TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
@@ -62,7 +63,7 @@ app.get('/api/socios', async (req, res) => {
 // El número lo pone la base de datos (AUTOINCREMENT), así que dos
 // personas emitiendo un recibo al mismo tiempo nunca chocan de número.
 app.post('/api/recibos', async (req, res) => {
-  const { fecha, estado, metodo, socio, socioNum, items, total } = req.body || {};
+  const { fecha, estado, metodo, socio, socioNum, items, total, observaciones } = req.body || {};
 
   if (!fecha || !estado || !metodo || !socio || !Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: 'Faltan datos obligatorios del recibo.' });
@@ -70,9 +71,9 @@ app.post('/api/recibos', async (req, res) => {
 
   try {
     const result = await db.execute({
-      sql: `INSERT INTO recibos (fecha, estado, metodo, socio, socio_num, items, total)
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      args: [fecha, estado, metodo, socio, socioNum || null, JSON.stringify(items), Number(total) || 0]
+sql: `INSERT INTO recibos (fecha, estado, metodo, socio, socio_num, items, total, observaciones)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [fecha, estado, metodo, socio, socioNum || null, JSON.stringify(items), Number(total) || 0, observaciones || null]
     });
 
     const numero = Number(result.lastInsertRowid);
