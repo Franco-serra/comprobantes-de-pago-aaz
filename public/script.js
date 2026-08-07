@@ -282,7 +282,7 @@ document.getElementById('newReceiptBtn').addEventListener('click', () => {
   document.getElementById('socioNum').value = '';
   document.getElementById('observaciones').value = '';
   document.getElementById('estado').value = 'Pagado';
-  document.getElementById('metodo').value = 'Efectivo';
+  document.getElementById('metodo').value = 'Transferencia';
   document.getElementById('fecha').valueAsDate = new Date();
   document.getElementById('itemsBody').innerHTML = '';
   addItemRow('Cuota mensual', 1, 0);
