@@ -77,7 +77,7 @@ document.getElementById('metodo').addEventListener('change', render);
 document.getElementById('fecha').valueAsDate = new Date();
 
 // seed with one item
-addItemRow('Cuota mensual', 1, 18000);
+addItemRow('Cuota mensual', 1, 25000);
 render();
 
 // ---------- Autocompletado de socios ----------
@@ -285,7 +285,7 @@ document.getElementById('newReceiptBtn').addEventListener('click', () => {
   document.getElementById('metodo').value = 'Transferencia';
   document.getElementById('fecha').valueAsDate = new Date();
   document.getElementById('itemsBody').innerHTML = '';
-  addItemRow('Cuota mensual', 1, 18000);
+  addItemRow('Cuota mensual', 1, 25000);
 
   const btn = document.getElementById('downloadBtn');
   btn.style.display = 'block';
