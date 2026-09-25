@@ -91,7 +91,10 @@ const socios = [
   { numero: 70, nombre: "Lucas Crosio" },
   { numero: 71, nombre: "Garcia Jose" },
   { numero: 72, nombre: "Blazina Juan Carlos" },
-  { numero: 73, nombre: "Peirano Agustin" }
+  { numero: 73, nombre: "Peirano Agustin" },
+  { numero: 74, nombre: "Di Candilo Marcos" },
+  { numero: 75, nombre: "Di Candilo Mariano" },
+  { numero: 76, nombre: "Roldan Damian Gonzalo" }
 ];
 
 async function main() {
