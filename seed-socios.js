@@ -94,7 +94,8 @@ const socios = [
   { numero: 73, nombre: "Peirano Agustin" },
   { numero: 74, nombre: "Di Candilo Marcos" },
   { numero: 75, nombre: "Di Candilo Mariano" },
-  { numero: 76, nombre: "Roldan Damian Gonzalo" }
+  { numero: 76, nombre: "Roldan Damian Gonzalo" },
+  { numero: 77, nombre: "Casado Matias Esuardo"},
 ];
 
 async function main() {
